@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My QR Code</title>
+
+    <style>
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        img {
+            width: 250px;
+            margin-top: 15px;
+            border-radius: 10px;
+            background: white;
+            padding: 10px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #38bdf8;
+            color: black;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .download-btn:hover {
+            background: #0ea5e9;
+        }
+    </style>
+</head>
+
+<body>
+
+<a href="/login"
+   style="
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 6px 10px;
+        background: #22c55e;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: bold;
+   ">
+    ⬅ Login
+</a>
+
+<div class="card">
+
+    <h2>🎫 Your QR Code</h2>
+
+    <p>{{ student_id }}</p>
+
+    <img src="/qrcodes/{{ student_id }}.png">
+
+    <br>
+
+    <a class="download-btn"
+       href="/qrcodes/{{ student_id }}.png"
+       download>
+       Download QR
+    </a>
+
+</div>
+
+</body>
+</html>

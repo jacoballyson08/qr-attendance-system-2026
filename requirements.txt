@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+mysql-connector-python
+psycopg2-binary
+jinja2
+python-multipart
+pytz
+qrcode

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Attendance Scanner</title>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 350px;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #38bdf8;
+        }
+
+        #reader {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #334155;
+            font-size: 14px;
+        }
+
+        .success {
+            background: #16a34a;
+        }
+
+        .error {
+            background: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📷 QR Attendance Scanner</h2>
+
+    <div id="reader"></div>
+
+    <div id="status" class="status">
+        Waiting for scan...
+    </div>
+
+</div>
+
+<script>
+function setStatus(msg, type = "") {
+    const status = document.getElementById("status");
+    status.innerText = msg;
+    status.className = "status " + type;
+}
+
+function onScanSuccess(decodedText) {
+
+    setStatus("Scanning: " + decodedText);
+
+    fetch(`/scan?student_id=${decodedText}`)
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.error) {
+                setStatus("❌ " + data.error, "error");
+            } else {
+                setStatus("✅ " + data.name + " marked present", "success");
+            }
+
+        })
+        .catch(() => {
+            setStatus("Server error", "error");
+        });
+}
+
+// FIXED scanner initialization
+const html5QrCode = new Html5Qrcode("reader");
+
+Html5Qrcode.getCameras().then(devices => {
+
+    if (devices && devices.length) {
+        html5QrCode.start(
+            devices[0].id,
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            onScanSuccess
+        );
+    }
+
+}).catch(err => {
+    setStatus("Camera error: " + err, "error");
+});
+</script>
+
+</body>
+</html>

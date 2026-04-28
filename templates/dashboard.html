@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+        }
+
+        .header {
+            background: #1e293b;
+            padding: 15px;
+            text-align: center;
+            color: #38bdf8;
+            font-size: 20px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        th {
+            background: #334155;
+        }
+
+        tr:hover {
+            background: #293548;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #38bdf8;
+            color: black;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    📊 Attendance Dashboard
+</div>
+
+<div class="container">
+
+    <a class="btn" href="/scanner">Open Scanner</a>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Student ID</th>
+            <th>Name</th>
+            <th>Time</th>
+        </tr>
+
+        {% for r in records %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.student_id }}</td>
+            <td>{{ r.name }}</td>
+            <td>{{ r.time_in }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+<!-- ADMIN FLOATING BUTTON -->
+<div id="adminIcon" onclick="toggleAdminPanel()"
+     style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+        background: lightblue;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 22px;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+     ">
+    ⚙
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel"
+     style="
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 220px;
+        background: #1e293b;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        display: none;
+     ">
+
+    <form method="post" action="/admin/reset-attendance"
+          onsubmit="return confirm('Delete ALL attendance records?')">
+
+        <input type="password"
+               name="password"
+               placeholder="Admin password"
+               required
+               style="
+                    width: 100%;
+                    padding: 8px;
+                    border-radius: 8px;
+                    border: none;
+                    margin-bottom: 8px;
+               ">
+
+        <button type="submit"
+                style="
+                    width: 100%;
+                    padding: 8px;
+                    background: red;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: bold;
+                    cursor: pointer;
+                ">
+            Reset Attendance
+        </button>
+    </form>
+
+</div>
+
+<script>
+function toggleAdminPanel() {
+    let panel = document.getElementById("adminPanel");
+
+    if (panel.style.display === "none" || panel.style.display === "") {
+        panel.style.display = "block";
+    } else {
+        panel.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>
